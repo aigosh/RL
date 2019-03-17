@@ -57,7 +57,7 @@ def mass_gaming(mdp, gamma, num_iter, games_number, steps_number):
         s = mdp.reset()
         rewards = []
         for t in range(steps_number):
-            # s, r, done, _ = mdp.step(get_optimal_action(mdp, state_values, s, gamma))
+            s, r, done, _ = mdp.step(get_optimal_action(mdp, state_values, s, gamma))
             rewards.append(r)
             if done:
                 break
@@ -80,17 +80,28 @@ if __name__ == '__main__':
     min_difference = 1e-5
 
     # Play in Frozen Lake Env
-    state_values = {}  # Initialize state_values
+    state_values = {state: 0 for state in mdp.get_all_states()}  # Initialize state_values
 
     # Run value iteration algo!
-    state_values, _ = None, None
+    state_values, _ = rl_value_iteration(mdp, gamma, num_iter, min_difference, state_values)
 
     # See how our agent performs - e.g. render what is going on when agent choose `optimal` value
     s = mdp.reset()
     mdp.render()
     rewards = []  # Save all rewards to see mean reward.
 
-    # Your code here!
+    for _ in range(num_iter):
+        action = get_optimal_action(mdp, state_values, s, gamma)
+        new_state, reward, done, _ = mdp.step(action)
+        rewards += [reward]
+        s = new_state
+        mdp.render()
+
+        if done:
+            break
+            print('Done!');
+
+        print(reward)
 
     print('Average reward: ', np.mean(rewards))
 
@@ -101,6 +112,6 @@ if __name__ == '__main__':
     # visualize_step_by_step(mdp, gamma, num_iter, min_difference)
 
     # Express test!
-    mass_gaming(mdp, gamma, num_iter, 1000, 100)
+    # mass_gaming(mdp, gamma, num_iter, 1000, 100)
 
 
