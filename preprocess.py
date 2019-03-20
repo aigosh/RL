@@ -12,9 +12,9 @@ class PreprocessAtari(ObservationWrapper):
         ObservationWrapper.__init__(self, env)
 
         self.img_size = (1, 64, 64)
-        self.observation_space = Box(0.0, 1.0, self.img_size)
+        self.observation_space = Box(0.0, 1.0, self.img_size, dtype=float)
 
-    def _observation(self, img):
+    def observation(self, img):
         """what happens to each observation"""
 
         # Here's what you need to do:
@@ -25,7 +25,12 @@ class PreprocessAtari(ObservationWrapper):
         #  * cast image to grayscale
         #  * convert image pixels to (0,1) range, float32 type
 
-        img = cv.resize()
+        img = img[35:, 10::10]
+        img = cv.resize(img, self.img_size[1:])
+        img = cv.cvtColor(img, cv.COLOR_RGB2GRAY, dstCn=1)
+        img = np.reshape(img, self.img_size)
+        img = img / 255.0
+
         return img.astype(np.float32)
 
 
@@ -50,5 +55,6 @@ if __name__ == '__main__':
     print("Formal tests seem fine. Here's an example of what you'll get.")
 
     plt.title("what your network gonna see")
-    plt.imshow(obs[0, :, :], interpolation='none', cmap='gray');
-    plt.show()
+    plt.imshow(obs[0, :, :], interpolation='nearest', cmap='gray')
+    plt.show(block=False)
+    plt.pause(5)
