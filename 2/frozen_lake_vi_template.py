@@ -2,7 +2,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from mdp import FrozenLakeEnv
-from mdp import has_graphviz
 from value_iteration_template import get_optimal_action, rl_value_iteration
 
 

@@ -1,12 +1,10 @@
 import gym
-import gym
 import numpy as np
-import pandas as pd
+
 gym.logger.set_level(40)
 
 import torch.optim as optim
 
-from tqdm import trange
 import matplotlib.pyplot as plt
 from dqn_agent_template import DQNAgent
 from framebuffer import FrameBuffer

@@ -1,6 +1,4 @@
-import gym
 import gym.spaces
-import math
 from qlearning_template import QLearningAgent
 import numpy as np
 import time
